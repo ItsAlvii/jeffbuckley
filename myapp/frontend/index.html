@@ -10,18 +10,11 @@
 
 <style>
 :root{
-  /* Background image (Jeff Buckley portrait from Wikimedia Commons) */
   --bg-image: url("https://guitar.com/wp-content/uploads/2019/08/jeff-buckley-1991-new-york-credit-jack-vartoogian-getty-159347564@1400x1050.jpg");
-
-  /* Album cover (Sketches for My Sweetheart the Drunk) */
   --album-cover: url("https://upload.wikimedia.org/wikipedia/en/f/f0/Jeff_Buckley_-_Sketches_for_My_Sweetheart_the_Drunk.jpg");
-
-  --paper-cream: #efe7e5;
-  --ink-dark: #0f0f10;
-  --muted: #9b9b9b;
-  --accent: #5b4a4a;
-  --grain-opacity: 0.06;
   --page-width: min(980px, 92vw);
+  --muted: #9b9b9b;
+  --grain-opacity: 0.06;
 }
 
 /* Reset + base */
@@ -29,12 +22,11 @@
 html,body{height:100%;background:#0b0b0b;font-family:"Merriweather",serif;color:#eee;line-height:1.45}
 body {
   background-color: #0b0b0b;
-  /* dark overlay for contrast + the chosen BG image */
   background-image:
     linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)),
     var(--bg-image);
   background-size: cover;
-  background-position: center center;
+  background-position: center 30%;
   background-repeat: no-repeat;
   background-attachment: fixed;
   -webkit-font-smoothing: antialiased;
@@ -43,8 +35,6 @@ body {
   padding: 36px 0 80px;
   color: #e9e6e6;
 }
-
-/* grain / film effect */
 body::after{
   content:"";
   position:fixed; inset:0;
@@ -53,8 +43,6 @@ body::after{
   mix-blend-mode:overlay;
   opacity:var(--grain-opacity);
 }
-
-/* soft vignette */
 body::before{
   content:"";
   position:fixed; inset:0;
@@ -64,168 +52,58 @@ body::before{
 }
 
 /* container */
-.container{
-  width:var(--page-width);
-  margin:0 auto;
-  padding:28px;
-  backdrop-filter: blur(4px) saturate(90%);
-}
+.container{ width:var(--page-width); margin:0 auto; padding:28px; backdrop-filter: blur(4px) saturate(90%); }
 
 /* header */
-.header{
-  display:flex;
-  align-items:flex-end;
-  gap:18px;
-  margin-bottom:28px;
-  position:relative;
-}
-.brand{
-  font-family:"Special Elite", monospace;
-  font-size:44px;
-  letter-spacing:2px;
-  color:#f3efe9;
-  transform:translateY(4px);
-}
-.title{
-  font-size:18px;
-  font-weight:700;
-  text-transform:uppercase;
-  color:#dcd7d7;
-  opacity:0.95;
-  margin-bottom:6px;
-}
+.header{ display:flex; align-items:flex-end; gap:18px; margin-bottom:28px; position:relative; }
+.brand{ font-family:"Special Elite", monospace; font-size:44px; letter-spacing:2px; color:#f3efe9; transform:translateY(4px); }
 
-/* torn paper accent behind header */
-.header::after{
-  content:"";
-  position:absolute;
-  left:-6px; right:-6px; top:56px;
-  height:36px;
-  background:linear-gradient(90deg, rgba(255,255,255,0.03), rgba(0,0,0,0.06));
-  transform:rotate(-1deg);
-  border-top:1px dashed rgba(255,255,255,0.03);
-  filter:contrast(.9);
-  z-index:-1;
-}
+/* Title animation */
+.title-wrap{ position:relative; height:36px; overflow:visible; display:flex; align-items:flex-end; }
+.title { font-size:18px; font-weight:700; text-transform:uppercase; color:#dcd7d7; opacity:0.95; margin-bottom:6px; transform-origin:center left; transition: transform 360ms cubic-bezier(.2,.9,.2,1), opacity 360ms ease; }
+.title-exit { opacity:0; transform: translateY(-8px) scale(.995); }
+.title-enter { opacity:0; transform: translateY(10px) scale(.995); }
+
+/* subtitle (static album) */
+.subtitle { color:var(--muted); font-size:13px; margin-top:6px; }
 
 /* layout */
-.layout{
-  display:grid;
-  grid-template-columns: 360px 1fr;
-  gap:28px;
-  align-items:start;
-}
+.layout{ display:grid; grid-template-columns: 360px 1fr; gap:28px; align-items:start; }
 
-/* player card */
-.player{
-  background:linear-gradient(180deg, rgba(18,18,18,0.85), rgba(8,8,8,0.88));
-  border:1px solid rgba(255,255,255,0.04);
-  border-radius:12px;
-  padding:18px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.6);
-  position:relative;
-  overflow:hidden;
-}
-.player .paper{
-  background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(0,0,0,0.02));
-  border-radius:8px;
-  padding:12px;
-}
-.cassette-top{
-  height:8px;
-  width:100%;
-  background: repeating-linear-gradient(90deg, rgba(255,255,255,0.02) 0 6px, rgba(0,0,0,0.02) 6px 12px);
-  border-radius:6px;
-  margin-bottom:12px;
-}
-.art{
-  width:100%;
-  height:180px;
-  border-radius:6px;
-  background-size:cover;
-  background-position:center center;
-  background-repeat:no-repeat;
-  /* album cover for the art */
-  background-image: var(--album-cover);
-  filter:grayscale(.0) contrast(.98) brightness(.96);
-  margin-bottom:12px;
-  box-shadow: inset 0 -30px 60px rgba(0,0,0,0.5);
-}
-.controls{
-  display:flex; gap:10px; align-items:center; margin-bottom:10px;
-}
-.btn{
-  background:rgba(255,255,255,0.03);
-  border:1px solid rgba(255,255,255,0.04);
-  width:56px;height:56px;border-radius:8px;
-  display:grid;place-items:center;
-  cursor:pointer;
-  user-select:none;
-  transition: transform .08s ease, background .12s ease;
-  font-size:18px;
-}
+/* player */
+.player{ background:linear-gradient(180deg, rgba(18,18,18,0.85), rgba(8,8,8,0.88)); border:1px solid rgba(255,255,255,0.04); border-radius:12px; padding:18px; box-shadow: 0 10px 30px rgba(0,0,0,0.6); position:relative; overflow:hidden; }
+.player .paper{ background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(0,0,0,0.02)); border-radius:8px; padding:12px; }
+.cassette-top{ height:8px; width:100%; background: repeating-linear-gradient(90deg, rgba(255,255,255,0.02) 0 6px, rgba(0,0,0,0.02) 6px 12px); border-radius:6px; margin-bottom:12px; }
+.art{ width:100%; height:180px; border-radius:6px; background-size:cover; background-position:center center; background-repeat:no-repeat; background-image: var(--album-cover); filter:grayscale(.0) contrast(.98) brightness(.96); margin-bottom:12px; box-shadow: inset 0 -30px 60px rgba(0,0,0,0.5); }
+
+/* controls */
+.controls-row{ display:flex; gap:10px; align-items:center; margin-bottom:10px; }
+.controls{ display:flex; gap:10px; align-items:center; }
+.btn{ background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.04); width:56px;height:56px;border-radius:8px; display:grid;place-items:center; cursor:pointer; user-select:none; transition: transform .08s ease, background .12s ease; font-size:18px; }
+.icon-btn{ width:44px;height:44px;border-radius:8px;font-size:14px; }
 .btn:active{ transform:translateY(1px) scale(.995); }
 .btn:hover{ background:rgba(255,255,255,0.045); }
 .seek-wrap{flex:1}
-.seek{
-  -webkit-appearance:none; appearance:none;
-  width:100%; height:8px; background:linear-gradient(90deg,#333, #444);
-  border-radius:6px; outline:none;
-}
+.seek{ -webkit-appearance:none; appearance:none; width:100%; height:8px; background:linear-gradient(90deg,#333, #444); border-radius:6px; outline:none; }
 .seek::-webkit-slider-thumb{ -webkit-appearance:none; width:14px;height:14px;border-radius:50%; background:#efe7e5; border:2px solid #3b3737; box-shadow:0 2px 6px rgba(0,0,0,0.5); cursor:pointer; }
 .meta{ display:flex; justify-content:space-between; color:var(--muted); font-size:13px; margin-top:8px; }
 
-/* journal */
-.journal{
-  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.04));
-  border-radius:12px;
-  padding:22px;
-  border:1px solid rgba(255,255,255,0.03);
-  box-shadow: 0 15px 50px rgba(0,0,0,0.55);
-}
-.journal .paper-sheet{
-  background: linear-gradient(180deg, #faf6f4, #f2eae7);
-  color:#1b1717;
-  border-radius:8px;
-  padding:20px;
-  border:1px solid rgba(0,0,0,0.06);
-  box-shadow: 0 6px 18px rgba(0,0,0,0.18);
-  transform:rotate(-0.75deg);
-}
-.lyrics-scroll{
-  max-height: 56vh;
-  overflow:auto;
-  padding-right:12px;
-  margin-top:8px;
-}
-.lyrics-scroll::-webkit-scrollbar{ width:10px; }
-.lyrics-scroll::-webkit-scrollbar-thumb{ background:rgba(64,56,56,0.45); border-radius:6px; border:2px solid rgba(0,0,0,0.12); }
-.lyrics-scroll::-webkit-scrollbar-track{ background:transparent; }
+/* journal / lyrics */
+.journal{ background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.04)); border-radius:12px; padding:22px; border:1px solid rgba(255,255,255,0.03); box-shadow: 0 15px 50px rgba(0,0,0,0.55); }
+.journal .paper-sheet{ background: linear-gradient(180deg, #faf6f4, #f2eae7); color:#1b1717; border-radius:8px; padding:20px; border:1px solid rgba(0,0,0,0.06); box-shadow: 0 6px 18px rgba(0,0,0,0.18); transform:rotate(-0.75deg); }
+.lyrics-scroll{ max-height: 56vh; overflow:hidden; padding-right:12px; margin-top:8px; position:relative; }
 
-.journal h2{
-  font-family:"Special Elite", monospace;
-  font-size:20px;
-  letter-spacing:1px;
-  margin-bottom:8px;
-  color:#2b2626;
-}
-.entry{ margin-bottom:18px; padding-left:8px; font-size:15px; color:#282222; white-space:pre-wrap; }
-.handwritten{
-  font-family:"Special Elite", monospace;
-  font-size:13px;
-  color:#4a3f3f;
-  margin-top:12px;
-}
+/* single lyrics container (simpler & robust) */
+#lyricsContent { position:relative; padding-left:8px; padding-right:6px; overflow:auto; -webkit-overflow-scrolling:touch; color:#282222; white-space:pre-wrap; font-size:15px; line-height:1.5; transition: opacity 320ms ease, transform 320ms cubic-bezier(.2,.9,.2,1); }
+
+/* small typographic touches */
+.journal h2{ font-family:"Special Elite", monospace; font-size:20px; letter-spacing:1px; margin-bottom:8px; color:#2b2626; }
+.entry{ margin-bottom:18px; }
+.handwritten{ font-family:"Special Elite", monospace; font-size:13px; color:#4a3f3f; margin-top:12px; }
 
 /* footer */
-.footer{
-  margin-top:40px;
-  color:rgba(255,255,255,0.24);
-  text-align:center;
-  font-size:12px;
-}
+.footer{ margin-top:40px; color:rgba(255,255,255,0.24); text-align:center; font-size:12px; }
 
-/* responsive */
 @media (max-width:880px){
   .layout{ grid-template-columns: 1fr; }
   .player{ order:2 }
@@ -239,8 +117,10 @@ body::before{
     <header class="header" role="banner">
       <div class="brand">jeff buckley</div>
       <div>
-        <div class="title">I Know We Could Be So Happy Baby</div>
-        <div style="color:var(--muted); font-size:13px; margin-top:6px">from *Sketches for My Sweetheart the Drunk* (1998)</div>
+        <div class="title-wrap">
+          <div id="pageTitleEl" class="title">I Know We Could Be So Happy Baby</div>
+        </div>
+        <div class="subtitle">from *Sketches for My Sweetheart the Drunk* (1998)</div>
       </div>
     </header>
 
@@ -248,15 +128,23 @@ body::before{
       <aside class="player" aria-label="Audio player">
         <div class="paper">
           <div class="cassette-top"></div>
-          <div class="art" aria-hidden="true"></div>
+          <div class="art" id="artwork" aria-hidden="true" role="img" style="background-size:cover;"></div>
 
-          <div style="display:flex;gap:12px;align-items:center;">
-            <div class="controls">
-              <div class="btn" id="play" aria-label="Play">►</div>
-              <div class="btn" id="stop" aria-label="Stop">■</div>
+          <div class="controls-row">
+            <div class="controls" style="align-items:center;">
+              <button class="btn icon-btn" id="prevBtn" title="Previous (←)" aria-label="Previous">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M15 6L9 12L15 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+
+              <button class="btn" id="play" aria-label="Play">►</button>
+              <button class="btn" id="stop" aria-label="Stop">■</button>
+
+              <button class="btn icon-btn" id="nextBtn" title="Next (→)" aria-label="Next">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M9 6L15 12L9 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
             </div>
 
-            <div class="seek-wrap">
+            <div class="seek-wrap" style="flex:1">
               <input id="seek" class="seek" type="range" min="0" max="100" value="0" aria-label="Seek">
             </div>
           </div>
@@ -266,68 +154,16 @@ body::before{
             <div><label style="font-size:13px;color:var(--muted)"><input id="loop" type="checkbox" style="margin-right:6px"> loop</label></div>
           </div>
 
-          <div class="handwritten">sketches of a song — left unfinished, yet still burning</div>
+          <div class="handwritten" id="player-note">sketches of a song — left unfinished, yet still burning</div>
         </div>
       </aside>
 
       <section class="journal" aria-label="Lyrics & notes">
         <div class="paper-sheet">
           <h2>lyrics & notes</h2>
-          <div class="lyrics-scroll" aria-live="polite">
-            <article class="entry">
-	There's no easy answer
-	None to blame or forgive
-	Two cripples dancing to the end we live
-	
-	I'm not with you, but of you
-	Not with you, but of you
-	
-	You are soft and young to me
-	I am the ghost who come and go
-	And I hope I'll catch you in the throes
-	One last look at the wonder
-	One last look at the wonder
-	
-	Oh, God, I love you
-	And all the past we once knew
-	Some other love becomes you
-	Whatever else we come to
-	I know we could be so happy, baby
-	If we wanted to be
-
-	You are soft and young to me
-	I am the ghost who comes and goes
-	I'm hoping that I'll catch you in the throes
-	One last look at the joy that we've become
-	But there's no easy answer
-	None to blame or forgive
-	We were two cripples dancing
-	To the bitter end we live
-
-	I'm not with you, but of you
-	I'm not with you, but of you
-	
-	Oh, God, I loved you
-	And all of the past we once knew
-	Some other love becomes you
-	Whatever else it comes to
-	I know we could be so happy, baby
-	If we wanted to be
-	
-	We had a birthplace in common
-	We have separate beds and lives
-	Just sit here and gloat
-	Break out the oldest pictures
-	And hang your ruined letters out to dry
-	We had a birthplace in common
-	And separate beds and lives
-	
-	I know we could be so happy, baby
-	If we wanted to be
-	I know we could be so happy, baby
-	If we wanted to be
-	Yeah, oh
-            </article>
+          <div class="lyrics-scroll" aria-live="polite" id="lyricsScroll">
+            <!-- single robust lyrics container -->
+            <div id="lyricsContent" aria-live="polite"></div>
           </div>
           <div class="handwritten">— unfinished words, drifting like the Mississippi</div>
         </div>
@@ -336,38 +172,248 @@ body::before{
 
     <footer class="footer" role="contentinfo">
       © 2025 tribute — in memory of Jeff Buckley
-      <div style="font-size:11px;color:rgba(255,255,255,0.18);margin-top:6px">
-      </div>
     </footer>
   </div>
 
-  <audio id="audio" preload="metadata">
-    <source src="happy-baby.mp3" type="audio/mpeg">
-    Your browser does not support the audio element.
-  </audio>
+  <audio id="audio" preload="metadata"></audio>
 
 <script>
+/* playlist (order enforced exactly as you asked) */
+const playlist = [
+  {
+    id: "happy-baby",
+    title: "I Know We Could Be So Happy Baby",
+    album: "Sketches for My Sweetheart the Drunk (1998)",
+    audio: "happy-baby.mp3",
+    cover: "https://upload.wikimedia.org/wikipedia/en/f/f0/Jeff_Buckley_-_Sketches_for_My_Sweetheart_the_Drunk.jpg",
+    lyrics: `There's no easy answer
+None to blame or forgive
+Two cripples dancing to the end we live
+
+I'm not with you, but of you
+Not with you, but of you
+
+You are soft and young to me
+I am the ghost who come and go
+And I hope I'll catch you in the throes
+One last look at the wonder
+One last look at the wonder
+
+Oh, God, I love you
+And all the past we once knew
+Some other love becomes you
+Whatever else we come to
+I know we could be so happy, baby
+If we wanted to be
+
+You are soft and young to me
+I am the ghost who comes and goes
+I'm hoping that I'll catch you in the throes
+One last look at the joy that we've become
+But there's no easy answer
+None to blame or forgive
+We were two cripples dancing
+To the bitter end we live
+
+I'm not with you, but of you
+I'm not with you, but of you
+
+Oh, God, I loved you
+And all of the past we once knew
+Some other love becomes you
+Whatever else it comes to
+I know we could be so happy, baby
+If we wanted to be
+
+We had a birthplace in common
+We have separate beds and lives
+Just sit here and gloat
+Break out the oldest pictures
+And hang your ruined letters out to dry
+We had a birthplace in common
+And separate beds and lives
+
+I know we could be so happy, baby
+If we wanted to be
+I know we could be so happy, baby
+If we wanted to be
+Yeah, oh`
+  },
+
+  {
+    id: "everybody",
+    title: "Everybody Here Wants You",
+    album: "Sketches for My Sweetheart the Drunk (1998)",
+    audio: "everybody-here-wants-you.mp3",
+    cover: "https://upload.wikimedia.org/wikipedia/en/f/f0/Jeff_Buckley_-_Sketches_for_My_Sweetheart_the_Drunk.jpg",
+    lyrics: `[Verse 1]
+Twenty-nine pearls in your kiss, a singing smile
+Coffee smell, and lilac skin, your flame in me
+Twenty-nine pearls in your kiss, a singing smile
+Coffee smell, and lilac skin, your flame in me
+I'm only here for this moment
+
+[Refrain]
+I know everybody here wants you
+I know everybody here thinks they need you
+I'll be waiting right here just to show you
+How our love will blow it all away
+
+[Verse 2]
+Such a thing of wonder in this crowd
+I'm a stranger in this town, you're free with me
+And our eyes are locked in downcast love
+I sit here proud
+Even now you're undressed in your dreams with me
+I'm only here for this moment
+
+[Refrain]
+I know everybody here wants you
+I know everybody here thinks he needs you
+I'll be waiting right here just to show you
+How our love will blow it all away
+
+[Bridge]
+And all the tears we cried have dried on yesterday
+A sea of fools have parted for us, there's nothing in our way, my love
+Don't you see? Don't you see?
+You're just the torch to put the flame to all our guilt and shame
+And I'll rise like an ember in your name
+No, no
+
+[Refrain]
+I know everybody here wants you (No)
+I know everybody here thinks they need you
+I'll be waiting right here just to show you
+Oh, let me show you that love can rise just like embers
+Love can taste like the wine of the age, oh, babe
+And I know they all look so good from a distance
+But I tell you I'm the one
+I know everybody here well thinks he needs you, thinks he need you
+And I'll be waiting right by here just to show you`
+  }
+];
+
+const playlistOrder = [0,1]; // enforced order
+
+/* DOM refs */
 const audio = document.getElementById('audio');
 const playBtn = document.getElementById('play');
 const stopBtn = document.getElementById('stop');
+const prevBtn = document.getElementById('prevBtn');
+const nextBtn = document.getElementById('nextBtn');
 const seek = document.getElementById('seek');
 const timeLabel = document.getElementById('time');
 const loopCheckbox = document.getElementById('loop');
+const artwork = document.getElementById('artwork');
+const pageTitleEl = document.getElementById('pageTitleEl');
+const lyricsEl = document.getElementById('lyricsContent');
 
+let currentOrderIndex = 0;
+let transitioning = false;
+
+function formatTime(s) {
+  if (!s || isNaN(s) || !isFinite(s)) return '0:00';
+  const m = Math.floor(s / 60);
+  const sec = Math.floor(s % 60).toString().padStart(2,'0');
+  return `${m}:${sec}`;
+}
+
+/* simple, reliable lyrics swap:
+   - on first load populate immediately
+   - on subsequent swaps, fade out, replace innerHTML, then fade in
+*/
+function swapLyrics(newLyrics) {
+  if (!lyricsEl.innerHTML.trim()) {
+    // initial populate, no animation
+    lyricsEl.innerHTML = `<article class="entry">${escapeHtml(newLyrics)}</article>`;
+    lyricsEl.style.opacity = '1';
+    lyricsEl.style.transform = 'none';
+    return;
+  }
+
+  if (transitioning) return;
+  transitioning = true;
+
+  // fade out
+  lyricsEl.style.transition = 'opacity 220ms ease, transform 220ms cubic-bezier(.2,.9,.2,1)';
+  lyricsEl.style.opacity = '0';
+  lyricsEl.style.transform = 'translateY(-12px)';
+
+  setTimeout(() => {
+    // replace content
+    lyricsEl.innerHTML = `<article class="entry">${escapeHtml(newLyrics)}</article>`;
+    // start from below and fade in
+    lyricsEl.style.transform = 'translateY(12px)';
+    // force reflow
+    void lyricsEl.offsetWidth;
+    lyricsEl.style.opacity = '1';
+    lyricsEl.style.transform = 'translateY(0)';
+    // finish transition
+    setTimeout(() => {
+      transitioning = false;
+    }, 300);
+  }, 240);
+}
+
+function escapeHtml(text) {
+  if (!text) return '';
+  const esc = text.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]);
+  return esc.replace(/\r\n|\r|\n/g, '<br>');
+}
+
+function animateTitle(newText) {
+  // small two-step visual: lower the old briefly, then set new text and bring in
+  pageTitleEl.classList.add('title-exit');
+  setTimeout(() => {
+    pageTitleEl.textContent = newText;
+    pageTitleEl.classList.remove('title-exit');
+    pageTitleEl.classList.add('title-enter');
+    setTimeout(() => pageTitleEl.classList.remove('title-enter'), 380);
+  }, 160);
+}
+
+function loadSongAtOrder(idx, autoplay=false) {
+  if (idx < 0) idx = playlistOrder.length - 1;
+  if (idx >= playlistOrder.length) idx = 0;
+  currentOrderIndex = idx;
+  const song = playlist[playlistOrder[currentOrderIndex]];
+
+  // update title with animation
+  animateTitle(song.title);
+
+  // set artwork
+  artwork.style.backgroundImage = `url("${song.cover}")`;
+
+  // set audio
+  audio.src = song.audio;
+  audio.load();
+
+  // reset UI state
+  seek.value = 0;
+  timeLabel.textContent = '0:00 / 0:00';
+  playBtn.textContent = '►';
+
+  // update lyrics (robust)
+  swapLyrics(song.lyrics);
+
+  if (autoplay) {
+    audio.play().then(()=> { playBtn.textContent = '❚❚'; }).catch(()=> { playBtn.textContent = '❚❚'; });
+  }
+}
+
+/* controls wiring */
 playBtn.addEventListener('click', () => {
   if (audio.paused) {
-    audio.play();
-    playBtn.textContent = '❚❚';
-    playBtn.setAttribute('aria-label','Pause');
+    audio.play().then(()=> { playBtn.textContent = '❚❚'; }).catch(()=> { playBtn.textContent = '❚❚'; });
   } else {
-    audio.pause();
-    playBtn.textContent = '►';
-    playBtn.setAttribute('aria-label','Play');
+    audio.pause(); playBtn.textContent = '►';
   }
 });
-stopBtn.addEventListener('click', () => {
-  audio.pause(); audio.currentTime = 0; playBtn.textContent = '►';
-});
+stopBtn.addEventListener('click', () => { audio.pause(); audio.currentTime = 0; playBtn.textContent = '►'; });
+prevBtn.addEventListener('click', () => { loadSongAtOrder(currentOrderIndex - 1, true); });
+nextBtn.addEventListener('click', () => { loadSongAtOrder(currentOrderIndex + 1, true); });
+
 audio.addEventListener('timeupdate', () => {
   if (audio.duration && !isNaN(audio.duration)) {
     const pct = (audio.currentTime / audio.duration) * 100;
@@ -376,26 +422,23 @@ audio.addEventListener('timeupdate', () => {
   }
 });
 seek.addEventListener('input', () => {
-  if (audio.duration && !isNaN(audio.duration)) {
-    audio.currentTime = (seek.value / 100) * audio.duration;
-  }
+  if (audio.duration && !isNaN(audio.duration)) audio.currentTime = (seek.value / 100) * audio.duration;
 });
-loopCheckbox.addEventListener('change', () => {
-  audio.loop = loopCheckbox.checked;
+loopCheckbox.addEventListener('change', () => { audio.loop = loopCheckbox.checked; });
+audio.addEventListener('loadedmetadata', () => { timeLabel.textContent = formatTime(audio.currentTime) + ' / ' + formatTime(audio.duration); });
+audio.addEventListener('ended', () => { loadSongAtOrder(currentOrderIndex + 1, true); });
+
+document.addEventListener('keydown', (e) => {
+  if (e.code === 'Space') { e.preventDefault(); playBtn.click(); }
+  else if (e.key === 'ArrowLeft') prevBtn.click();
+  else if (e.key === 'ArrowRight') nextBtn.click();
 });
-function formatTime(s) {
-  if (!s || isNaN(s) || !isFinite(s)) return '0:00';
-  const m = Math.floor(s / 60);
-  const sec = Math.floor(s % 60).toString().padStart(2,'0');
-  return `${m}:${sec}`;
-}
-audio.addEventListener('loadedmetadata', () => {
-  timeLabel.textContent = formatTime(audio.currentTime) + ' / ' + formatTime(audio.duration);
-});
-audio.addEventListener('error', (e) => {
-  console.warn('Audio failed to load or play', e);
-  timeLabel.textContent = 'Audio unavailable';
-});
+
+/* initial load */
+loadSongAtOrder(0, false);
+
+/* quick debug hook */
+window.__player = { playlist, playlistOrder, loadSongAtOrder };
 </script>
 </body>
 </html>
