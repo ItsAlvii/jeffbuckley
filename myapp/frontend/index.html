@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>jeff buckley — I Know We Could Be So Happy Baby</title>
+
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Merriweather:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  /* background: Jeff Buckley (1998 Sketches cover aesthetic) */
+  --bg-image: url("https://upload.wikimedia.org/wikipedia/en/0/0b/Jeff_Buckley_Sketches_for_My_Sweetheart_the_Drunk.jpg");
+
+  --paper-cream: #efe7e5;
+  --ink-dark: #0f0f10;
+  --muted: #9b9b9b;
+  --accent: #5b4a4a;
+  --grain-opacity: 0.06;
+  --page-width: min(980px, 92vw);
+}
+
+/* Reset + base */
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:#0b0b0b;font-family:"Merriweather",serif;color:#eee;line-height:1.45}
+body {
+  background-color: #0b0b0b;
+  background-image:
+    linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),
+    var(--bg-image);
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  position: relative;
+  padding: 36px 0 80px;
+  color: #e9e6e6;
+}
+
+/* grain / film effect */
+body::after{
+  content:"";
+  position:fixed; inset:0;
+  pointer-events:none;
+  background-image:linear-gradient(transparent, transparent), url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="4" height="4"><rect width="4" height="4" fill="%23000000" fill-opacity="0.02"/></svg>');
+  mix-blend-mode:overlay;
+  opacity:var(--grain-opacity);
+}
+
+/* soft vignette */
+body::before{
+  content:"";
+  position:fixed; inset:0;
+  pointer-events:none;
+  background: radial-gradient(ellipse at center, rgba(0,0,0,0) 40%, rgba(0,0,0,0.55) 100%);
+  mix-blend-mode:multiply;
+}
+
+/* container */
+.container{
+  width:var(--page-width);
+  margin:0 auto;
+  padding:28px;
+  backdrop-filter: blur(4px) saturate(90%);
+}
+
+/* header */
+.header{
+  display:flex;
+  align-items:flex-end;
+  gap:18px;
+  margin-bottom:28px;
+  position:relative;
+}
+.brand{
+  font-family:"Special Elite", monospace;
+  font-size:44px;
+  letter-spacing:2px;
+  color:#f3efe9;
+  transform:translateY(4px);
+}
+.title{
+  font-size:18px;
+  font-weight:700;
+  text-transform:uppercase;
+  color:#dcd7d7;
+  opacity:0.95;
+  margin-bottom:6px;
+}
+
+/* torn paper accent behind header */
+.header::after{
+  content:"";
+  position:absolute;
+  left:-6px; right:-6px; top:56px;
+  height:36px;
+  background:linear-gradient(90deg, rgba(255,255,255,0.03), rgba(0,0,0,0.06));
+  transform:rotate(-1deg);
+  border-top:1px dashed rgba(255,255,255,0.03);
+  filter:contrast(.9);
+  z-index:-1;
+}
+
+/* layout */
+.layout{
+  display:grid;
+  grid-template-columns: 360px 1fr;
+  gap:28px;
+  align-items:start;
+}
+
+/* player card */
+.player{
+  background:linear-gradient(180deg, rgba(18,18,18,0.85), rgba(8,8,8,0.88));
+  border:1px solid rgba(255,255,255,0.04);
+  border-radius:12px;
+  padding:18px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+  position:relative;
+  overflow:hidden;
+}
+.player .paper{
+  background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(0,0,0,0.02));
+  border-radius:8px;
+  padding:12px;
+}
+.cassette-top{
+  height:8px;
+  width:100%;
+  background: repeating-linear-gradient(90deg, rgba(255,255,255,0.02) 0 6px, rgba(0,0,0,0.02) 6px 12px);
+  border-radius:6px;
+  margin-bottom:12px;
+}
+.art{
+  width:100%;
+  height:180px;
+  border-radius:6px;
+  background-size:cover;
+  background-position:center center;
+  background-repeat:no-repeat;
+  background-image: var(--bg-image);
+  filter:grayscale(.6) contrast(.95) brightness(.92);
+  margin-bottom:12px;
+  box-shadow: inset 0 -30px 60px rgba(0,0,0,0.5);
+}
+.controls{
+  display:flex; gap:10px; align-items:center; margin-bottom:10px;
+}
+.btn{
+  background:rgba(255,255,255,0.03);
+  border:1px solid rgba(255,255,255,0.04);
+  width:56px;height:56px;border-radius:8px;
+  display:grid;place-items:center;
+  cursor:pointer;
+  user-select:none;
+  transition: transform .08s ease, background .12s ease;
+  font-size:18px;
+}
+.btn:active{ transform:translateY(1px) scale(.995); }
+.btn:hover{ background:rgba(255,255,255,0.045); }
+.seek-wrap{flex:1}
+.seek{
+  -webkit-appearance:none; appearance:none;
+  width:100%; height:8px; background:linear-gradient(90deg,#333, #444);
+  border-radius:6px; outline:none;
+}
+.seek::-webkit-slider-thumb{ -webkit-appearance:none; width:14px;height:14px;border-radius:50%; background:#efe7e5; border:2px solid #3b3737; box-shadow:0 2px 6px rgba(0,0,0,0.5); cursor:pointer; }
+.meta{ display:flex; justify-content:space-between; color:var(--muted); font-size:13px; margin-top:8px; }
+
+/* journal */
+.journal{
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.04));
+  border-radius:12px;
+  padding:22px;
+  border:1px solid rgba(255,255,255,0.03);
+  box-shadow: 0 15px 50px rgba(0,0,0,0.55);
+}
+.journal .paper-sheet{
+  background: linear-gradient(180deg, #faf6f4, #f2eae7);
+  color:#1b1717;
+  border-radius:8px;
+  padding:20px;
+  border:1px solid rgba(0,0,0,0.06);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.18);
+  transform:rotate(-0.75deg);
+}
+.lyrics-scroll{
+  max-height: 56vh;
+  overflow:auto;
+  padding-right:12px;
+  margin-top:8px;
+}
+.lyrics-scroll::-webkit-scrollbar{ width:10px; }
+.lyrics-scroll::-webkit-scrollbar-thumb{ background:rgba(64,56,56,0.45); border-radius:6px; border:2px solid rgba(0,0,0,0.12); }
+.lyrics-scroll::-webkit-scrollbar-track{ background:transparent; }
+
+.journal h2{
+  font-family:"Special Elite", monospace;
+  font-size:20px;
+  letter-spacing:1px;
+  margin-bottom:8px;
+  color:#2b2626;
+}
+.entry{ margin-bottom:18px; padding-left:8px; font-size:15px; color:#282222; white-space:pre-wrap; }
+.handwritten{
+  font-family:"Special Elite", monospace;
+  font-size:13px;
+  color:#4a3f3f;
+  margin-top:12px;
+}
+
+/* footer */
+.footer{
+  margin-top:40px;
+  color:rgba(255,255,255,0.24);
+  text-align:center;
+  font-size:13px;
+}
+
+/* responsive */
+@media (max-width:880px){
+  .layout{ grid-template-columns: 1fr; }
+  .player{ order:2 }
+  .journal{ order:1 }
+  .art{ height:220px; }
+}
+</style>
+</head>
+<body>
+  <div class="container">
+    <header class="header" role="banner">
+      <div class="brand">jeff buckley</div>
+      <div>
+        <div class="title">I Know We Could Be So Happy Baby</div>
+        <div style="color:var(--muted); font-size:13px; margin-top:6px">from *Sketches for My Sweetheart the Drunk* (1998)</div>
+      </div>
+    </header>
+
+    <main class="layout" role="main">
+      <aside class="player" aria-label="Audio player">
+        <div class="paper">
+          <div class="cassette-top"></div>
+          <div class="art"></div>
+
+          <div style="display:flex;gap:12px;align-items:center;">
+            <div class="controls">
+              <div class="btn" id="play">►</div>
+              <div class="btn" id="stop">■</div>
+            </div>
+
+            <div class="seek-wrap">
+              <input id="seek" class="seek" type="range" min="0" max="100" value="0" aria-label="Seek">
+            </div>
+          </div>
+
+          <div class="meta">
+            <div id="time">0:00 / 0:00</div>
+            <div><label style="font-size:13px;color:var(--muted)"><input id="loop" type="checkbox" style="margin-right:6px"> loop</label></div>
+          </div>
+
+          <div class="handwritten">sketches of a song — left unfinished, yet still burning</div>
+        </div>
+      </aside>
+
+      <section class="journal" aria-label="Lyrics & notes">
+        <div class="paper-sheet">
+          <h2>lyrics & notes</h2>
+          <div class="lyrics-scroll" aria-live="polite">
+            <article class="entry">
+	There's no easy answer
+	None to blame or forgive
+	Two cripples dancing to the end we live
+	
+	I'm not with you, but of you
+	Not with you, but of you
+	
+	You are soft and young to me
+	I am the ghost who come and go
+	And I hope I'll catch you in the throes
+	One last look at the wonder
+	One last look at the wonder
+	
+	Oh, God, I love you
+	And all the past we once knew
+	Some other love becomes you
+	Whatever else we come to
+	I know we could be so happy, baby
+	If we wanted to be
+
+	You are soft and young to me
+	I am the ghost who comes and goes
+	I'm hoping that I'll catch you in the throes
+	One last look at the joy that we've become
+	But there's no easy answer
+	None to blame or forgive
+	We were two cripples dancing
+	To the bitter end we live
+
+	I'm not with you, but of you
+	I'm not with you, but of you
+	
+	Oh, God, I loved you
+	And all of the past we once knew
+	Some other love becomes you
+	Whatever else it comes to
+	I know we could be so happy, baby
+	If we wanted to be
+	
+	We had a birthplace in common
+	We have separate beds and lives
+	Just sit here and gloat
+	Break out the oldest pictures
+	And hang your ruined letters out to dry
+	We had a birthplace in common
+	And separate beds and lives
+	
+	I know we could be so happy, baby
+	If we wanted to be
+	I know we could be so happy, baby
+	If we wanted to be
+	Yeah, oh
+            </article>
+          </div>
+          <div class="handwritten">— unfinished words, drifting like the Mississippi</div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer" role="contentinfo">© 2025 tribute — in memory of Jeff Buckley</footer>
+  </div>
+
+  <audio id="audio" preload="metadata">
+    <source src="happy-baby.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+
+<script>
+const audio = document.getElementById('audio');
+const playBtn = document.getElementById('play');
+const stopBtn = document.getElementById('stop');
+const seek = document.getElementById('seek');
+const timeLabel = document.getElementById('time');
+const loopCheckbox = document.getElementById('loop');
+
+playBtn.addEventListener('click', () => {
+  if (audio.paused) {
+    audio.play();
+    playBtn.textContent = '❚❚';
+  } else {
+    audio.pause();
+    playBtn.textContent = '►';
+  }
+});
+stopBtn.addEventListener('click', () => {
+  audio.pause(); audio.currentTime = 0; playBtn.textContent = '►';
+});
+audio.addEventListener('timeupdate', () => {
+  if (audio.duration && !isNaN(audio.duration)) {
+    const pct = (audio.currentTime / audio.duration) * 100;
+    seek.value = pct;
+    timeLabel.textContent = formatTime(audio.currentTime) + ' / ' + formatTime(audio.duration);
+  }
+});
+seek.addEventListener('input', () => {
+  if (audio.duration && !isNaN(audio.duration)) {
+    audio.currentTime = (seek.value / 100) * audio.duration;
+  }
+});
+loopCheckbox.addEventListener('change', () => {
+  audio.loop = loopCheckbox.checked;
+});
+function formatTime(s) {
+  if (!s || isNaN(s) || !isFinite(s)) return '0:00';
+  const m = Math.floor(s / 60);
+  const sec = Math.floor(s % 60).toString().padStart(2,'0');
+  return `${m}:${sec}`;
+}
+audio.addEventListener('loadedmetadata', () => {
+  timeLabel.textContent = formatTime(audio.currentTime) + ' / ' + formatTime(audio.duration);
+});
+audio.addEventListener('error', (e) => {
+  console.warn('Audio failed to load or play', e);
+  timeLabel.textContent = 'Audio unavailable';
+});
+</script>
+</body>
+</html>
+

@@ -1,0 +1,19 @@
+# Simple, reliable Dockerfile for the API
+FROM node:18
+
+WORKDIR /usr/src/app
+
+# Copy lockfile if present for reproducible installs
+COPY api/package*.json ./
+
+# Install dependencies
+RUN npm install
+
+# Copy app source
+COPY api/ ./
+
+EXPOSE 3000
+
+# Use npm start if package.json defines "start": "node server.js"
+CMD ["npm", "start"]
+
