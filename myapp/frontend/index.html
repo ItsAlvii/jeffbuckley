@@ -10,8 +10,11 @@
 
 <style>
 :root{
-  /* background: Jeff Buckley (1998 Sketches cover aesthetic) */
-  --bg-image: url("https://upload.wikimedia.org/wikipedia/en/0/0b/Jeff_Buckley_Sketches_for_My_Sweetheart_the_Drunk.jpg");
+  /* Background image (Jeff Buckley portrait from Wikimedia Commons) */
+  --bg-image: url("https://guitar.com/wp-content/uploads/2019/08/jeff-buckley-1991-new-york-credit-jack-vartoogian-getty-159347564@1400x1050.jpg");
+
+  /* Album cover (Sketches for My Sweetheart the Drunk) */
+  --album-cover: url("https://upload.wikimedia.org/wikipedia/en/f/f0/Jeff_Buckley_-_Sketches_for_My_Sweetheart_the_Drunk.jpg");
 
   --paper-cream: #efe7e5;
   --ink-dark: #0f0f10;
@@ -26,8 +29,9 @@
 html,body{height:100%;background:#0b0b0b;font-family:"Merriweather",serif;color:#eee;line-height:1.45}
 body {
   background-color: #0b0b0b;
+  /* dark overlay for contrast + the chosen BG image */
   background-image:
-    linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),
+    linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)),
     var(--bg-image);
   background-size: cover;
   background-position: center center;
@@ -141,8 +145,9 @@ body::before{
   background-size:cover;
   background-position:center center;
   background-repeat:no-repeat;
-  background-image: var(--bg-image);
-  filter:grayscale(.6) contrast(.95) brightness(.92);
+  /* album cover for the art */
+  background-image: var(--album-cover);
+  filter:grayscale(.0) contrast(.98) brightness(.96);
   margin-bottom:12px;
   box-shadow: inset 0 -30px 60px rgba(0,0,0,0.5);
 }
@@ -217,7 +222,7 @@ body::before{
   margin-top:40px;
   color:rgba(255,255,255,0.24);
   text-align:center;
-  font-size:13px;
+  font-size:12px;
 }
 
 /* responsive */
@@ -243,12 +248,12 @@ body::before{
       <aside class="player" aria-label="Audio player">
         <div class="paper">
           <div class="cassette-top"></div>
-          <div class="art"></div>
+          <div class="art" aria-hidden="true"></div>
 
           <div style="display:flex;gap:12px;align-items:center;">
             <div class="controls">
-              <div class="btn" id="play">►</div>
-              <div class="btn" id="stop">■</div>
+              <div class="btn" id="play" aria-label="Play">►</div>
+              <div class="btn" id="stop" aria-label="Stop">■</div>
             </div>
 
             <div class="seek-wrap">
@@ -329,7 +334,11 @@ body::before{
       </section>
     </main>
 
-    <footer class="footer" role="contentinfo">© 2025 tribute — in memory of Jeff Buckley</footer>
+    <footer class="footer" role="contentinfo">
+      © 2025 tribute — in memory of Jeff Buckley
+      <div style="font-size:11px;color:rgba(255,255,255,0.18);margin-top:6px">
+      </div>
+    </footer>
   </div>
 
   <audio id="audio" preload="metadata">
@@ -349,9 +358,11 @@ playBtn.addEventListener('click', () => {
   if (audio.paused) {
     audio.play();
     playBtn.textContent = '❚❚';
+    playBtn.setAttribute('aria-label','Pause');
   } else {
     audio.pause();
     playBtn.textContent = '►';
+    playBtn.setAttribute('aria-label','Play');
   }
 });
 stopBtn.addEventListener('click', () => {
