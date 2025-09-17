@@ -1,19 +1,26 @@
-# Simple, reliable Dockerfile for the API
-FROM node:18
+# Stage 1: Build dependencies
+FROM node:18 AS builder
 
 WORKDIR /usr/src/app
 
-# Copy lockfile if present for reproducible installs
+# Copy only package.json + lockfile
 COPY api/package*.json ./
 
-# Install dependencies
-RUN npm install
+# Install only production dependencies
+RUN npm install --production
 
 # Copy app source
 COPY api/ ./
 
+# Stage 2: Create minimal runtime image
+FROM node:18-slim
+
+WORKDIR /usr/src/app
+
+# Copy dependencies and source from builder
+COPY --from=builder /usr/src/app ./
+
 EXPOSE 3000
 
-# Use npm start if package.json defines "start": "node server.js"
 CMD ["npm", "start"]
 
